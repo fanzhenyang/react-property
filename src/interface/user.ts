@@ -4,6 +4,7 @@ export interface ILoginData {
   client_id: string
   client_secret: string
   grant_type: string
+  [x: string]: string
 }
 
 export interface UserData<T> {

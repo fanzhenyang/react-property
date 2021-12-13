@@ -1,11 +1,12 @@
-import React, { useState } from 'react';
 import { LoginWrapper, LoginH1Title, LoginForm, LoginInput, LoginInputPassWord, LoginFormH2, LoginFormButton } from './loginStyles'
 import { UserOutlined, UnlockOutlined } from '@ant-design/icons';
 import { Form } from 'antd';
 import CryptoJS from 'crypto-js';
 import { login } from '../../api/user/user';
+import { useState } from 'react';
+import session from '../../utils/auth'
 // 加密
-const encrypt = (value:string):string => {
+const encrypt = (value: string): string => {
   // 如果是32位在java后端解密会报错 AES获取Cipher异常：Illegal key size 16位就不会
   // const key = CryptoJS.enc.Utf8.parse('61DC779D88F539478E45C55452AF9DBB')
   const key = CryptoJS.enc.Utf8.parse('61DC779D88F53947')
@@ -18,19 +19,27 @@ const encrypt = (value:string):string => {
   return encrypted
 }
 
-
 function Login() {
-  const [form] = Form.useForm()
-  // const [form, setFrom] = useState({
-  //   username: '',
-  //   password: '',
-  //   client_id: 'GSTT',
-  //   client_secret: 'cdtye2019'
-  // }) 
-  const handleSubmit = () => {
+  // 点击提交
+  const handleSubmit = async (values: any) => {
+    setLoading(true)
     const formData = new FormData()
-    console.log('form::::::::::::::',form.getFieldsValue())
+    const target = Object.assign({}, values.form, { client_id: 'GSTT', client_secret: 'cdtye2019' })
+    Object.keys(target).forEach(key => {
+      formData.append(key, encrypt(target[key]))
+    })
+    formData.append('grant_type', 'password')
+
+    const data = await login(formData, () => {
+      setLoading(false)
+    })
+    session.setItem('ADMIN_TOKEN', data.access_token)
+    session.setItem('USER_DATA', data.user_name)
   }
+
+  const [form] = Form.useForm()
+  const [loading, setLoading] = useState(false)
+
   return <LoginWrapper>
     <LoginH1Title>铁路投资建设智慧管控平台</LoginH1Title>
     <LoginForm form={form} autoComplete="off" onFinish={handleSubmit}>
@@ -49,7 +58,7 @@ function Login() {
         <LoginInputPassWord placeholder="请输入密码" prefix={<UnlockOutlined />} />
       </LoginForm.Item>
       <LoginForm.Item>
-        <LoginFormButton type="primary" htmlType="submit" block>
+        <LoginFormButton loading={loading} type="primary" htmlType="submit" block>
           登录
         </LoginFormButton>
       </LoginForm.Item>

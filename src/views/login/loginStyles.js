@@ -52,9 +52,6 @@ export const LoginInput = styled(Input)`
 		height: 4vh;
 		color: #fff;
 	}
-	.ant-form-item-has-error :not(.ant-input-disabled):not(.ant-input-borderless) {
-		background-color: transparent;
-	}
 `;
 
 export const LoginInputPassWord = styled(Input.Password)`
