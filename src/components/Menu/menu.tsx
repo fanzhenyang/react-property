@@ -1,53 +1,60 @@
 import { init } from '@/api/menu/menu'
-import { useEffect, useState } from 'react'
+import { useEffect, useState, useCallback, memo } from 'react'
 import { Menu as IMenu } from '@/interface/menu'
-import roterPermission from '@/utils/routerPermission'
+import { menuAction } from '@/redux/reducers/menuReducer'
+import { useDispatch } from 'react-redux'
 import { Menu } from 'antd'
 const { SubMenu } = Menu
-function MenuFunc() {
+const MenuCom = memo(() => {
+  const dispatch = useDispatch()
   const [routers, setRouters] = useState<IMenu[]>([])
-  const routerAsync = async () => {
+  const routerAsync = useCallback(async () => {
     const { data } = await init({ clientIds: 'cdtye-common-sys-client' })
-    const list = await roterPermission(data[0].menus)
-    console.log('%c 🌮 list: ', 'font-size:20px;background-color: #6EC1C2;color:#fff;', list);
-    setRouters(list)
-    console.log('%c 🍝 routers: ', 'font-size:20px;background-color: #33A5FF;color:#fff;', routers);
-  }
+    setRouters(data[0].menus)
+    dispatch(menuAction(data[0].menus))
+  }, [])
+
+
   useEffect(() => {
     routerAsync()
   }, [])
-
   return <Menu mode="horizontal">
     {
       routers.map((router: IMenu) => {
+        console.log('%c 🍎 router: ', 'font-size:20px;background-color: #33A5FF;color:#fff;', router);
         if (router.children && router.children.length > 0) {
-          return <SubMenu key={router.meta?.moduleId + ''} title={router.meta?.moduleName}>
-            <MenuChild list={router.children} />
+          return <SubMenu key={'sub' + router.moduleId} title={router.moduleName}>
+            <MenuChild list={router.children} key={'sub' + Math.random()} />
           </SubMenu>
         } else {
-          return <Menu.Item key={router.moduleId + ''}>
-            {router.meta?.moduleName}
+          return <Menu.Item eventKey={'sub-item' + router.moduleId}>
+            {router.moduleName}
           </Menu.Item>
         }
       })
     }
   </Menu >
-}
+})
 
-const MenuChild = (props: { list: IMenu[] }) => {
+const Tmp = memo((props: any) => <>{props.children}</>);
+
+const MenuChild = memo((props: { list: IMenu[] }) => {
   return <>
     {
       props.list.map((el: IMenu) => {
+        console.log('%c 🍕 el: ', 'font-size:20px;background-color: #6EC1C2;color:#fff;', el.moduleId);
         if (el.children && el.children.length > 0) {
-          return <SubMenu key={el.meta?.moduleId + ''} title={el.meta?.moduleName}>
-            <MenuChild list={el.children} />
-          </SubMenu>
+          return <>
+            <SubMenu title={el.moduleName} key={'sub-item' + el.moduleId}>
+              <MenuChild list={el.children} />
+            </SubMenu>
+          </>
         } else {
-          return <Menu.Item key={el.meta?.moduleId + ''}>{el.meta?.moduleName}</Menu.Item>
+          return <Menu.Item eventKey={'sub-item' + el.moduleId}>{el.moduleName}</Menu.Item>
         }
       })
     }
   </>
-}
+})
 
-export default MenuFunc
+export default MenuCom

@@ -4,7 +4,10 @@ import { Form } from 'antd';
 import CryptoJS from 'crypto-js';
 import { login } from '../../api/user/user';
 import { useState } from 'react';
+import { userAction } from '@/redux/reducers/userReducer'
 import session from '../../utils/auth'
+import { useDispatch } from 'react-redux'
+
 // 加密
 const encrypt = (value: string): string => {
   // 如果是32位在java后端解密会报错 AES获取Cipher异常：Illegal key size 16位就不会
@@ -20,6 +23,7 @@ const encrypt = (value: string): string => {
 }
 
 function Login() {
+  const dispatch = useDispatch()
   // 点击提交
   const handleSubmit = async (values: any) => {
     setLoading(true)
@@ -33,6 +37,7 @@ function Login() {
     const data = await login(formData, () => {
       setLoading(false)
     })
+    dispatch(userAction(data))
     session.setItem('ADMIN_TOKEN', data.access_token)
     session.setItem('USER_DATA', data.user_name)
   }

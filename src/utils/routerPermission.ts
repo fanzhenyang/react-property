@@ -30,9 +30,7 @@ function setAddRoters(list: Menu[], route: any, arr: any[], redirect = false) {
           element: i !== 0 ? lazy(() => import(`@/views/${item.modulePath}.tsx`)) : lazy(() => import(`@/views${item.modulePath}.tsx`)),
           name: item.url?.split('/')[item.url?.split('/').length - 1],
           meta: {
-            moduleId: item.moduleId,
-            moduleLogo: item.moduleLogo,
-            moduleName: item.moduleName
+
           }
         })
       }

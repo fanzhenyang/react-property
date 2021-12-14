@@ -1,16 +1,11 @@
 import styled from 'styled-components';
 import Login from '@/views/login/login';
 import Layout from '@/layout/layout';
-import session from '@/utils/auth';
-import { useEffect, useState } from 'react';
-import { HashRouter as Router, Route, Routes } from 'react-router-dom'
-import RotersCom from '@/routers/router'
+import { useSelector } from 'react-redux';
+import { RootState } from '@/redux/index'
 
 function App() {
-  const [token, setToken] = useState('')
-  useEffect(() => {
-    setToken(session.getItem('ADMIN_TOKEN'))
-  }, [token])
+  const { token } = useSelector((state: RootState) => ({ token: state.userReducer.token }))
 
   return (
     <AppView>
@@ -21,7 +16,7 @@ function App() {
           </>
         </Routes>
       </Router> */}
-      {token ? <Layout /> : <Login />}
+      {true ? <Layout /> : <Login />}
     </AppView>
   )
 }
