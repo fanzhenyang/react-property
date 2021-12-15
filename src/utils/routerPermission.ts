@@ -1,23 +1,22 @@
-import routers from '@/routers/router'
+import routersMap from '@/routers/routerMap'
 import { Menu } from '@/interface/menu'
 import { lazy } from 'react';
-async function routerConfig(routerList: Menu[]): Promise<Menu[]> {
+async function routerConfig(routerList: Menu[]) {
   if (routerList.length === 0) {
-    return []
+    return false
   }
-  const arr: any[] = []
 
-  routers.forEach(route => {
+  routersMap.forEach(route => {
     if (route.name === 'Layout') {
-      setAddRoters(routerList, route, arr, true)
+      setAddRoters(routerList, route, true)
     }
   })
 
-  const list = arr.slice(-1)
+  const list = routersMap
   return list
 }
 
-function setAddRoters(list: Menu[], route: any, arr: any[], redirect = false) {
+function setAddRoters(list: Menu[], route: any, redirect = false) {
   list.forEach((item, index) => {
     if ((item.url && item.modulePath) || (item.children && item.children.length > 0)) {
       if (item.url && item.modulePath) {
@@ -36,9 +35,7 @@ function setAddRoters(list: Menu[], route: any, arr: any[], redirect = false) {
       }
 
       if (item.children && item.children.length > 0) {
-        setAddRoters(item.children, route, arr)
-      } else {
-        arr.push(route)
+        setAddRoters(item.children, route)
       }
     }
   })

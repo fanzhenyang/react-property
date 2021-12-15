@@ -1,12 +1,8 @@
-import { lazy, Suspense } from 'react';
-import { HashRouter as Router, Route, Routes } from 'react-router-dom'
-import session from '@/utils/auth'
+import { lazy } from 'react';
 import Layout from '@/layout/layout'
-import NProgress from 'nprogress'
-NProgress.configure({ showSpinner: false })
-const routers = [
+const routersMap = [
   {
-    ptah: '/login',
+    path: '/login',
     name: 'Login',
     element: lazy(() => import('@/views/login/login')),
     props: {
@@ -27,4 +23,4 @@ const routers = [
     children: []
   }
 ]
-export default routers
+export default routersMap

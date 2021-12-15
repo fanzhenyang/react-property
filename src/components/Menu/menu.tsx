@@ -14,47 +14,40 @@ const MenuCom = memo(() => {
     dispatch(menuAction(data[0].menus))
   }, [])
 
-
   useEffect(() => {
     routerAsync()
   }, [])
-  return <Menu mode="horizontal">
-    {
-      routers.map((router: IMenu) => {
-        console.log('%c 🍎 router: ', 'font-size:20px;background-color: #33A5FF;color:#fff;', router);
-        if (router.children && router.children.length > 0) {
-          return <SubMenu key={'sub' + router.moduleId} title={router.moduleName}>
-            <MenuChild list={router.children} key={'sub' + Math.random()} />
-          </SubMenu>
-        } else {
-          return <Menu.Item eventKey={'sub-item' + router.moduleId}>
-            {router.moduleName}
-          </Menu.Item>
-        }
-      })
-    }
+
+  const handleClick = ({ item, key, keyPath, selectedKeys, domEvent }: any) => {
+    console.log('%c 🥝 domEvent: ', 'font-size:20px;background-color: #4b4b4b;color:#fff;', domEvent);
+    console.log('%c 🍏 selectedKeys: ', 'font-size:20px;background-color: #3F7CFF;color:#fff;', selectedKeys);
+    console.log('%c 🍢 keyPath: ', 'font-size:20px;background-color: #FFDD4D;color:#fff;', keyPath);
+    console.log('%c 🍭 key: ', 'font-size:20px;background-color: #93C0A4;color:#fff;', key);
+    console.log('%c 🍐 item: ', 'font-size:20px;background-color: #FCA650;color:#fff;', item);
+
+  }
+
+  return <Menu mode="horizontal" onSelect={({ item, key, keyPath, selectedKeys, domEvent }) => handleClick({ item, key, keyPath, selectedKeys, domEvent })}>
+    {renderMenu(routers)}
   </Menu >
 })
 
-const Tmp = memo((props: any) => <>{props.children}</>);
+const handleTitle = ({ key, domEvent }: any) => {
+  console.log('%c 🍤 domEvent: ', 'font-size:20px;background-color: #E41A6A;color:#fff;', domEvent);
+  console.log('%c 🥛 key: ', 'font-size:20px;background-color: #93C0A4;color:#fff;', key);
 
-const MenuChild = memo((props: { list: IMenu[] }) => {
-  return <>
-    {
-      props.list.map((el: IMenu) => {
-        console.log('%c 🍕 el: ', 'font-size:20px;background-color: #6EC1C2;color:#fff;', el.moduleId);
-        if (el.children && el.children.length > 0) {
-          return <>
-            <SubMenu title={el.moduleName} key={'sub-item' + el.moduleId}>
-              <MenuChild list={el.children} />
-            </SubMenu>
-          </>
-        } else {
-          return <Menu.Item eventKey={'sub-item' + el.moduleId}>{el.moduleName}</Menu.Item>
-        }
-      })
+}
+
+
+const renderMenu = (list: IMenu[]) => {
+  return list.map((el: IMenu) => {
+    if (el.children && el.children.length > 0) {
+      return <SubMenu onTitleClick={({ key, domEvent }) => handleTitle({ key, domEvent })} title={el.moduleName} key={'' + el.moduleId}>
+        {renderMenu(el.children)}
+      </SubMenu>
+    } else {
+      return <Menu.Item key={'' + el.moduleId}>{el.moduleName}</Menu.Item>
     }
-  </>
-})
-
+  })
+}
 export default MenuCom

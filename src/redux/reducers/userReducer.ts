@@ -1,6 +1,5 @@
 import * as types from '../actionTypes'
 import { AnyAction } from 'redux'
-import { UserData, Users } from '@/interface/user'
 export interface IUserState {
   token: string
   userData: any

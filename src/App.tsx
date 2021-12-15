@@ -1,22 +1,18 @@
 import styled from 'styled-components';
-import Login from '@/views/login/login';
 import Layout from '@/layout/layout';
-import { useSelector } from 'react-redux';
-import { RootState } from '@/redux/index'
+import RouterGuardsAuth from '@/routers/router';
+import { Suspense } from 'react'
+import { HashRouter as Router } from 'react-router-dom'
 
 function App() {
-  const { token } = useSelector((state: RootState) => ({ token: state.userReducer.token }))
 
   return (
     <AppView>
-      {/* <Router>
-        <Routes>
-          <>
-            {token ? <Layout /> : <Login />}
-          </>
-        </Routes>
-      </Router> */}
-      {true ? <Layout /> : <Login />}
+      <Suspense fallback={<span>Loading...</span>}>
+        <Router>
+          <RouterGuardsAuth />
+        </Router>
+      </Suspense>
     </AppView>
   )
 }

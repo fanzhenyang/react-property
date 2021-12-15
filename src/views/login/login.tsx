@@ -4,9 +4,10 @@ import { Form } from 'antd';
 import CryptoJS from 'crypto-js';
 import { login } from '../../api/user/user';
 import { useState } from 'react';
-import { userAction } from '@/redux/reducers/userReducer'
-import session from '../../utils/auth'
-import { useDispatch } from 'react-redux'
+import { userAction } from '@/redux/reducers/userReducer';
+import session from '../../utils/auth';
+import { useDispatch } from 'react-redux';
+import { useNavigate } from 'react-router-dom';
 
 // 加密
 const encrypt = (value: string): string => {
@@ -24,6 +25,7 @@ const encrypt = (value: string): string => {
 
 function Login() {
   const dispatch = useDispatch()
+  const navigate = useNavigate()
   // 点击提交
   const handleSubmit = async (values: any) => {
     setLoading(true)
@@ -40,6 +42,7 @@ function Login() {
     dispatch(userAction(data))
     session.setItem('ADMIN_TOKEN', data.access_token)
     session.setItem('USER_DATA', data.user_name)
+    navigate('/')
   }
 
   const [form] = Form.useForm()
