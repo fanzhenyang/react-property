@@ -1,41 +1,54 @@
-import { useLocation, Route, Routes, Navigate } from 'react-router-dom';
-import { Menu } from '@/interface/menu'
-import routersMap from './routerMap';
+import { lazy } from 'react'
+import { useLocation, Route, Routes, Navigate, Location, Router, useRoutes } from 'react-router-dom';
 import session from '@/utils/auth';
 import { useSelector } from 'react-redux';
-import { RootState } from '@/redux/index'
-// import NProgress from 'nprogress';
-// NProgress.configure({ showSpinner: false });
+import { RootState } from '@/redux/index';
+import Layout from '@/layout/layout';
+import { Menu } from '@/interface/menu';
+import MenuCom from '@/components/Menu/menu';
+import { commonRoters } from './commonRoters';
 
-function RouterGuardsAuth() {
-  const { menuRouter } = useSelector((state: RootState) => ({ menuRouter: state.menuReducer.menuRouter }))
-  console.log('%c 🥝 menuRouter: ', 'font-size:20px;background-color: #7F2B82;color:#fff;', menuRouter);
-  // const location = useLocation()
+// 是否存在token
+const tokenRouter = () => {
   const token = session.getItem('ADMIN_TOKEN')
-
-  const isToKenCom = () => {
-    if (!token) {
-      return <Route path="*"
-        element={<Navigate to="/login" />}
-      />
-    }
+  if (!token || token === 'undefined') {
+    return <Route path="*" element={<Navigate to="/login" />} />
   }
-  return <Routes>
-    {deepRoute(routersMap)}
-    {isToKenCom()}
-  </Routes>
 }
 
-const deepRoute = (list: any) => {
-  // console.log('%c 🍇 list: ', 'font-size:20px;background-color: #3F7CFF;color:#fff;', list);
-  return list.map((el: any) => {
-    // debugger
+const layoutRouters = (list: Menu[]) => {
+  return list && list.map((el: Menu) => {
     if (el.children && el.children.length > 0) {
-      deepRoute(el.children)
+      layoutRouters(el.children)
     } else {
-      return <Route path={el.path} key={'router' + Math.random()} element={<el.element />} />
+      if (el.url && el.modulePath) {
+        const i = el.modulePath.indexOf('/')
+        const CompsRouter = (i !== 0 ? lazy(() => import(`@/views/${el.modulePath}.tsx`)) : lazy(() => import(`@/views${el.modulePath}.tsx`)))
+        return <Route path={el.url} key={el.url || '' + Math.random()} element={<CompsRouter />} />
+      }
     }
   })
 }
 
+function RouterGuardsAuth() {
+  const location = useLocation()
+  // 获取后端返回的路由
+  const { menuRouter } = useSelector((state: RootState) => state.menuReducer)
+  console.log('%c 🍡 menuRouter: ', 'font-size:20px;background-color: #6EC1C2;color:#fff;', menuRouter);
+
+
+  return <Routes>
+    {
+      // 登录以及一些不存在layout下的一些路由
+      commonRoters.map(el => {
+        return <Route path={el.path} element={<el.element />} key={el.path} />
+      })
+    }
+    <Route element={<Layout />}>
+      {/* <MenuCom /> */}
+      {layoutRouters(menuRouter)}
+    </Route>
+    {tokenRouter()}
+  </Routes >
+}
 export default RouterGuardsAuth

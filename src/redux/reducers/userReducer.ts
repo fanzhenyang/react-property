@@ -1,25 +1,36 @@
 import * as types from '../actionTypes'
 import { AnyAction } from 'redux'
 export interface IUserState {
-  token: string
-  userData: any
+  token?: string
+  userData?: any
+  isLogin?: boolean
 }
 const initialUserState: IUserState = {
   token: '',
-  userData: {}
+  userData: {},
+  isLogin: false
 }
 
-export function userAction(data: any) {
+export function userAction(payload: any) {
   return {
     type: types.LOGIN_USER,
-    data
+    payload
+  }
+}
+
+export function userLogin(payload: boolean) {
+  return {
+    type: types.IS_LOGIN,
+    payload
   }
 }
 
 function useData(state: IUserState = initialUserState, action: AnyAction) {
   switch (action.type) {
     case types.LOGIN_USER:
-      return { token: action.data.access_token, userData: action.data.user_name }
+      return { token: action.payload.access_token, userData: action.payload.user_name }
+    case types.IS_LOGIN:
+      return { isLogin: action.payload }
     default:
       return state
   }

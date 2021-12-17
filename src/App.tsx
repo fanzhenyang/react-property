@@ -1,20 +1,21 @@
 import styled from 'styled-components';
-import Layout from '@/layout/layout';
 import RouterGuardsAuth from '@/routers/router';
 import { Suspense } from 'react'
 import { HashRouter as Router } from 'react-router-dom'
+import Layout from './layout/layout';
 
 function App() {
 
   return (
     <AppView>
-      <Suspense fallback={<span>Loading...</span>}>
+      <Suspense fallback={<div>Loading...</div>}>
         <Router>
-          <RouterGuardsAuth />
+          <Layout>
+            <RouterGuardsAuth />
+          </Layout>
         </Router>
       </Suspense>
-    </AppView>
-  )
+    </AppView>)
 }
 
 export default App;

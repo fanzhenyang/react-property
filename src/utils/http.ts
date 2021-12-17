@@ -25,6 +25,10 @@ class Http {
     instance.interceptors.request.use(config => {
       // 添加全局的loading..
       // 请求头携带token
+      const token = session.getItem('ADMIN_TOKEN')
+      if (!token || token === 'undefined') {
+
+      }
       if (config.headers) {
         config.headers.Authorization = 'Bearer ' + session.getItem('ADMIN_TOKEN')
       }
@@ -45,7 +49,7 @@ class Http {
       if (config.url && config.url.includes('auth/oauth/token')) {
         if (data.status === 412) {
           message.error(data.message)
-          window.location.hash = '/login'
+          session.clear()
           return false
         } else {
           message.success('登录成功')
@@ -53,10 +57,7 @@ class Http {
       }
       if (data.status === 401) {
         message.error(data.message)
-        return false
-      }
-      if (data.status === 412) {
-        message.error(data.message)
+
         return false
       }
 
