@@ -1,9 +1,11 @@
 // 引入react需要用的
-import { useEffect, useState, memo, useCallback } from 'react'
+import { useEffect, useState, memo, useCallback } from 'react';
 // 引入api
-import { init } from '@/api/menu/menu'
+import { init } from '@/api/menu/menu';
 // 引入类型声明
-import { Menu as IMenu } from '@/interface/menu'
+import { Menu as IMenu } from '@/interface/menu';
+// 引入组件
+import { MenuWrapper } from './menuStyle';
 // 导入redux
 import { useDispatch } from 'react-redux';
 import { menuAction } from '@/redux/reducers/menuReducer';
@@ -48,9 +50,9 @@ const RenderMenu = memo(() => {
     // const {}
   }
 
-  return <Menu mode="horizontal" onSelect={handleClick}>
+  return <MenuWrapper mode="horizontal" onSelect={handleClick}>
     {menuChild(menu)}
-  </Menu>
+  </MenuWrapper>
 })
 
 

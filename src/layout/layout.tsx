@@ -1,9 +1,10 @@
-import Menu from '@/components/Menu/menu'
+import Header from '@/components/Header/header'
+import { Outlet } from 'react-router-dom'
 function Layout(props: any) {
   return <>
-    <Menu />
+    <Header />
     <main>
-      {props.children}
+      <Outlet />
     </main>
   </>
 }

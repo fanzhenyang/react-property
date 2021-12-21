@@ -1,6 +1,7 @@
 import axios, { AxiosInstance, AxiosRequestConfig, AxiosResponse } from 'axios';
 import { message } from 'antd';
-import session from './auth'
+import session from './auth';
+import { } from 'react-router-dom'
 class Http {
   private readonly baseUrl: string | undefined
 
@@ -25,10 +26,11 @@ class Http {
     instance.interceptors.request.use(config => {
       // 添加全局的loading..
       // 请求头携带token
-      const token = session.getItem('ADMIN_TOKEN')
-      if (!token || token === 'undefined') {
+      // const token = session.getItem('ADMIN_TOKEN')
+      // console.log('%c 🍹 token: ', 'font-size:20px;background-color: #F5CE50;color:#fff;', token);
+      // if (!token || token === 'undefined') {
 
-      }
+      // }
       if (config.headers) {
         config.headers.Authorization = 'Bearer ' + session.getItem('ADMIN_TOKEN')
       }
@@ -49,7 +51,7 @@ class Http {
       if (config.url && config.url.includes('auth/oauth/token')) {
         if (data.status === 412) {
           message.error(data.message)
-          session.clear()
+          window.location.href = '/login'
           return false
         } else {
           message.success('登录成功')
@@ -57,7 +59,7 @@ class Http {
       }
       if (data.status === 401) {
         message.error(data.message)
-
+        window.location.href = '/login'
         return false
       }
 
