@@ -1,5 +1,5 @@
-import http from '../../utils/http'
-import { Menu } from '../../interface/menu'
+import http from '@/utils/http'
+import { Menu } from '@/interface/menu'
 interface OrderItem {
   id: number
   platformCode: string

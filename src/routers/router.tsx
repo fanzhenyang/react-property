@@ -8,7 +8,7 @@ import { commonRoters } from './commonRoters';
 
 export function RouterGuardsAuth() {
   const location = useLocation()
-  console.log('%c 🥞 location: ', 'font-size:20px;background-color: #ED9EC7;color:#fff;', location);
+  // console.log('%c 🥞 location: ', 'font-size:20px;background-color: #ED9EC7;color:#fff;', location);
   // 获取后端返回的路由
   const { menuRouter } = useSelector((state: RootState) => state.menuReducer)
 

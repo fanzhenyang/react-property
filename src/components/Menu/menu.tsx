@@ -21,9 +21,9 @@ const RenderMenu = memo(() => {
   useEffect(() => {
     (async function () {
       const { data } = await init({ clientIds: 'cdtye-common-sys-client' })
-      console.log('%c 🍲 data: ', 'font-size:20px;background-color: #6EC1C2;color:#fff;', data);
+      // console.log('%c 🍲 data: ', 'font-size:20px;background-color: #6EC1C2;color:#fff;', data);
       dispatch(menuAction(data[0]?.menus))
-      console.log('%c 🍋 data[0].menus: ', 'font-size:20px;background-color: #3F7CFF;color:#fff;', data[0].menus)
+      // console.log('%c 🍋 data[0].menus: ', 'font-size:20px;background-color: #3F7CFF;color:#fff;', data[0].menus)
       setMenu(data[0]?.menus)
     })()
   }, [])
@@ -46,7 +46,7 @@ const RenderMenu = memo(() => {
   }
 
   const handleClick = ({ item, key, keyPath, domEvent }: any) => {
-    console.log('%c 🍯 key: ', 'font-size:20px;background-color: #4b4b4b;color:#fff;', key);
+    // console.log('%c 🍯 key: ', 'font-size:20px;background-color: #4b4b4b;color:#fff;', key);
     // const {}
   }
 

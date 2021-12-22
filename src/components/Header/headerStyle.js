@@ -36,7 +36,20 @@ export const HeaderMain = styled.div`
   flex-wrap: nowrap;
   flex-direction: row;
   height: 100%;
-  min-height: 8.1vh;
+  min-height: 7.5vh;
   padding: 0 1rem 1rem 1rem;
   box-sizing: border-box;
+`
+export const HeaderRight = styled.div`
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  flex: 0 0 9.5%;
+  height: 3.1vh;
+`
+export const HeaderUser = styled.div`
+
+`
+export const HeaderUserName = styled.div`
+  cursor: pointer;
 `
