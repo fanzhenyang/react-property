@@ -23,10 +23,11 @@ const paths = require('./paths');
 const modules = require('./modules');
 const getClientEnvironment = require('./env');
 const ModuleNotFoundPlugin = require('react-dev-utils/ModuleNotFoundPlugin');
-const ForkTsCheckerWebpackPlugin = require('react-dev-utils/ForkTsCheckerWebpackPlugin');
-const typescriptFormatter = require('react-dev-utils/typescriptFormatter');
+// const ForkTsCheckerWebpackPlugin = require('react-dev-utils/ForkTsCheckerWebpackPlugin');
+// const typescriptFormatter = require('react-dev-utils/typescriptFormatter');
 const ReactRefreshWebpackPlugin = require('@pmmmwh/react-refresh-webpack-plugin');
 const postcssNormalize = require('postcss-normalize');
+// const ForkTsCheckerWebpackPlugin = require('fork-ts-checker-webpack-plugin');
 
 const appPackageJson = require(paths.appPackageJson);
 
@@ -511,7 +512,16 @@ module.exports = function (webpackEnv) {
                     ? shouldUseSourceMap
                     : isEnvDevelopment,
                 },
-                'sass-loader'
+                'sass-loader',
+                {
+                  loader: 'sass-resources-loader',
+                  options: {
+                    resources: [
+                      path.resolve(__dirname, '../src/styles/variable.scss'),
+                      path.resolve(__dirname, '../src/styles/variable.scss')
+                    ],
+                  }
+                }
               ),
               // Don't consider CSS imports dead code even if the
               // containing package claims to have no side effects.
@@ -534,7 +544,15 @@ module.exports = function (webpackEnv) {
                   },
                 },
                 'sass-loader'
-              ),
+              ).concat({
+                loader: 'sass-resources-loader',
+                options: {
+                  resources: [
+                    path.resolve(__dirname, '../src/styles/variable.scss'),
+                    path.resolve(__dirname, '../src/styles/mixin.scss')
+                  ],
+                }
+              }),
             },
             // "file" loader makes sure those assets get served by WebpackDevServer.
             // When you `import` an asset, you get its (virtual) filename.
@@ -685,35 +703,35 @@ module.exports = function (webpackEnv) {
       }),
       // TypeScript type checking
       useTypeScript &&
-      new ForkTsCheckerWebpackPlugin({
-        typescript: resolve.sync('typescript', {
-          basedir: paths.appNodeModules,
-        }),
-        async: isEnvDevelopment,
-        checkSyntacticErrors: true,
-        resolveModuleNameModule: process.versions.pnp
-          ? `${__dirname}/pnpTs.js`
-          : undefined,
-        resolveTypeReferenceDirectiveModule: process.versions.pnp
-          ? `${__dirname}/pnpTs.js`
-          : undefined,
-        tsconfig: paths.appTsConfig,
-        reportFiles: [
-          // This one is specifically to match during CI tests,
-          // as micromatch doesn't match
-          // '../cra-template-typescript/template/src/App.tsx'
-          // otherwise.
-          '../**/src/**/*.{ts,tsx}',
-          '**/src/**/*.{ts,tsx}',
-          '!**/src/**/__tests__/**',
-          '!**/src/**/?(*.)(spec|test).*',
-          '!**/src/setupProxy.*',
-          '!**/src/setupTests.*',
-        ],
-        silent: true,
-        // The formatter is invoked directly in WebpackDevServerUtils during development
-        formatter: isEnvProduction ? typescriptFormatter : undefined,
-      }),
+      // new ForkTsCheckerWebpackPlugin({
+      //   typescript: resolve.sync('typescript', {
+      //     basedir: paths.appNodeModules,
+      //   }),
+      //   async: isEnvDevelopment,
+      //   checkSyntacticErrors: true,
+      //   resolveModuleNameModule: process.versions.pnp
+      //     ? `${__dirname}/pnpTs.js`
+      //     : undefined,
+      //   resolveTypeReferenceDirectiveModule: process.versions.pnp
+      //     ? `${__dirname}/pnpTs.js`
+      //     : undefined,
+      //   tsconfig: paths.appTsConfig,
+      //   reportFiles: [
+      //     // This one is specifically to match during CI tests,
+      //     // as micromatch doesn't match
+      //     // '../cra-template-typescript/template/src/App.tsx'
+      //     // otherwise.
+      //     '../**/src/**/*.{ts,tsx}',
+      //     '**/src/**/*.{ts,tsx}',
+      //     '!**/src/**/__tests__/**',
+      //     '!**/src/**/?(*.)(spec|test).*',
+      //     '!**/src/setupProxy.*',
+      //     '!**/src/setupTests.*',
+      //   ],
+      //   silent: true,
+      //   // The formatter is invoked directly in WebpackDevServerUtils during development
+      //   formatter: isEnvProduction ? typescriptFormatter : undefined,
+      // }),
       !disableESLintPlugin &&
       new ESLintPlugin({
         // Plugin options

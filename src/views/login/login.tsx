@@ -1,13 +1,13 @@
-import { LoginWrapper, LoginH1Title, LoginForm, LoginInput, LoginInputPassWord, LoginFormH2, LoginFormButton } from './loginStyles'
 import { UserOutlined, UnlockOutlined } from '@ant-design/icons';
-import { Form } from 'antd';
 import CryptoJS from 'crypto-js';
 import { login } from '../../api/user/user';
 import { useState } from 'react';
 import { userAction } from '@/redux/reducers/userReducer';
 import session from '../../utils/auth';
 import { useDispatch } from 'react-redux';
+import { Button, Form, Input } from 'antd';
 import { useNavigate } from 'react-router-dom';
+import loginModule from './login.module.scss';
 
 // 加密
 const encrypt = (value: string): string => {
@@ -48,30 +48,30 @@ function Login() {
   const [form] = Form.useForm()
   const [loading, setLoading] = useState(false)
 
-  return <LoginWrapper>
-    <LoginH1Title>铁路投资建设智慧管控平台</LoginH1Title>
-    <LoginForm form={form} autoComplete="off" onFinish={handleSubmit}>
-      <LoginFormH2>用户登录</LoginFormH2>
-      <LoginForm.Item
+  return <div className={loginModule.loginWrapper}>
+    <h1 className={loginModule.loginH1Title}>铁路投资建设智慧管控平台</h1>
+    <Form form={form} autoComplete="off" onFinish={handleSubmit} className={loginModule.loginForm}>
+      <h2 className={loginModule.loginFormH2}>用户登录</h2>
+      <Form.Item
         name={['form', 'username']}
         rules={[{ required: true, message: '请输入用户名!' }]}
       >
-        <LoginInput placeholder="请输入用户名" prefix={<UserOutlined />} />
-      </LoginForm.Item>
+        <Input placeholder="请输入用户名" prefix={<UserOutlined />} className={loginModule.loginInput} />
+      </Form.Item>
 
-      <LoginForm.Item
+      <Form.Item
         name={['form', 'password']}
         rules={[{ required: true, message: '请输入密码!' }]}
       >
-        <LoginInputPassWord placeholder="请输入密码" prefix={<UnlockOutlined />} />
-      </LoginForm.Item>
-      <LoginForm.Item>
-        <LoginFormButton loading={loading} type="primary" htmlType="submit" block>
+        <Input.Password placeholder="请输入密码" prefix={<UnlockOutlined />} className={loginModule.loginInput} />
+      </Form.Item>
+      <Form.Item>
+        <Button loading={loading} type="primary" htmlType="submit" block className={loginModule.loginFormButton}>
           登录
-        </LoginFormButton>
-      </LoginForm.Item>
-    </LoginForm>
-  </LoginWrapper>
+        </Button>
+      </Form.Item>
+    </Form>
+  </div>
 }
 
 export default Login;

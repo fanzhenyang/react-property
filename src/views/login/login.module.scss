@@ -1,0 +1,58 @@
+
+
+.loginWrapper {
+  @include flex-center(flex-start, center, nowrap, column);
+  background: url("../../assets/img/login/login_bg.jpeg") no-repeat center center;
+  background-size: 100% 100%;
+	height: 100vh;
+	width: 100vw;
+}
+
+.loginH1Title {
+  margin: 0;
+	padding-top: 20vh;
+	text-align: center;
+	font-size: 2.1vw;
+	font-weight: bold;
+	letter-spacing: 0.5rem;
+	background: linear-gradient(0deg, #26abdf, #fbfdfe 22%);
+	color: transparent;
+	-webkit-background-clip: text;
+}
+
+.loginForm {
+  background: url('../../assets/img/login/login_form.png') no-repeat center center;
+	background-size: 100% 100%;
+	position: relative;
+	width: 35vw;
+	height: 40vh;
+	box-sizing: border-box;
+	padding: 2vw 4vw;
+}
+
+.loginFormH2  {
+  font-size: 1.3vw;
+	color: #eee;
+	margin: 2vh auto 2.4vh auto;
+	text-align: center;
+	font-weight: bold;
+	letter-spacing: 1rem;
+}
+
+.loginInput {
+  background-color: transparent;
+	color: #fff;
+	border: 0.01rem solid rgba(255, 255, 255, 0.1);
+  & :global {
+    .ant-input {
+      background-color: transparent;
+      height: 4vh;
+      color: #fff;
+    }
+  }
+}
+
+.loginFormButton {
+  height: 4vh;
+	font-size: 1vw;
+}

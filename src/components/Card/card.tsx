@@ -1,21 +1,21 @@
-import { CardWapper, CardHeader, CardTitle } from './cardStyle';
+import cardModule from  './cardStyle.module.scss';
 import trainImg from '@/assets/img/card/train.png';
 type Props = {
   title: string;
   children?: React.ReactNode;
 };
 const Card = ({ title, children }: Props) => {
-  return <CardWapper>
-    <CardHeader>
+  return <div className={cardModule.cardWapper}>
+    <header className={cardModule.cardHeader}>
       <img src={trainImg} alt="" />
-      <CardTitle>
+      <div className={cardModule.cardTitle}>
         {title}
-      </CardTitle>
-    </CardHeader>
+      </div>
+    </header>
     <div>
       {children}
     </div>
-  </CardWapper>
+  </div>
 }
 
 export default Card

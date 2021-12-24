@@ -1,7 +1,9 @@
 import styled from 'styled-components';
 import Container from '@/components/Container/container';
 import Card from '@/components/Card/card';
-export const InverstmentCard = styled(Card)`
+export const InverstmentCard = styled(Card).attrs(props => {
+  
+})`
   height: calc(46vh - 4vh);
   z-index: 99;
 `

@@ -1,0 +1,12 @@
+@import './antd.scss';
+@import './normalize.scss';
+@import './reset.scss';
+
+html {
+	font-size: 0.5208vw !important;
+}
+
+/*viewport height === vh*/
+html body #root {
+	min-height: 100vh;
+}
